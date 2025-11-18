@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, memo, useCallback } from "react";
 import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
 import { Clock, CreditCard, Zap, ArrowRight, X, CheckCircle2, Rocket } from "lucide-react";
 
@@ -24,9 +24,21 @@ export const ContainerScroll = ({
       setIsMobile(window.innerWidth <= 768);
     };
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    
+    let ticking = false;
+    const handleResize = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          checkMobile();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener("resize", handleResize, { passive: true });
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -133,13 +145,13 @@ export const Card = ({
   );
 };
 
-export function HeroScrollDemo() {
+export const HeroScrollDemo = memo(function HeroScrollDemo() {
   const [email, setEmail] = React.useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     console.log("Email submitted:", email);
-  };
+  }, [email]);
 
   const formComponent = (
     <>
@@ -328,4 +340,4 @@ export function HeroScrollDemo() {
       </ContainerScroll>
     </div>
   );
-}
+});

@@ -5,16 +5,26 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
   title: "GetSaaS Idea - Validate Your SaaS Idea in 15 Minutes",
   description: "AI-powered market research that gives you a clear GO/NO-GO verdict and your exact next step. Validate your SaaS idea in minutes, not hours.",
+  metadataBase: new URL("https://getsaasidea.com"),
+  openGraph: {
+    title: "GetSaaS Idea - Validate Your SaaS Idea in 15 Minutes",
+    description: "AI-powered market research that gives you a clear GO/NO-GO verdict and your exact next step.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

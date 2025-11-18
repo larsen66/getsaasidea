@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Users, Quote } from "lucide-react";
 
@@ -24,7 +24,7 @@ const testimonials = [
   },
 ];
 
-export function SocialProof() {
+export const SocialProof = memo(function SocialProof() {
   return (
     <section className="relative w-full pt-24 pb-40 px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-5xl mx-auto">
@@ -32,7 +32,7 @@ export function SocialProof() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.4 }}
           className="mb-24 md:mb-32 text-center"
         >
@@ -48,10 +48,11 @@ export function SocialProof() {
               key={index}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
               className="relative rounded-lg p-8 md:p-10 transition-all duration-300 group overflow-hidden"
               style={{
+                willChange: "transform",
                 background: "var(--bg-secondary)",
                 border: "var(--border-width) solid var(--border-default)",
                 borderRadius: "var(--radius-lg)",
@@ -98,7 +99,7 @@ export function SocialProof() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.4, delay: 0.2 }}
           className="flex justify-center"
         >
@@ -118,5 +119,5 @@ export function SocialProof() {
       </div>
     </section>
   );
-}
+});
 

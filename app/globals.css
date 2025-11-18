@@ -134,12 +134,29 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-weight: 600;
+  text-rendering: optimizeLegibility;
+}
+
+/* Оптимизация производительности анимаций */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Оптимизация для GPU-ускорения */
+.motion-div,
+[class*="motion"] {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* ========================================

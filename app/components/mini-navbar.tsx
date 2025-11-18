@@ -1,15 +1,23 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 
-const AnimatedNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+const AnimatedNavLink = memo(({ href, children }: { href: string; children: React.ReactNode }) => {
+  const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = "var(--text-primary)";
+  }, []);
+  
+  const handleMouseLeave = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.style.color = "var(--text-tertiary)";
+  }, []);
+
   return (
     <a
       href={href}
       className="relative text-base font-medium transition-colors duration-300 group"
       style={{ color: "var(--text-tertiary)" }}
-      onMouseEnter={(e) => e.currentTarget.style.color = "var(--text-primary)"}
-      onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-tertiary)"}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <span>{children}</span>
       <span
@@ -18,36 +26,46 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
       />
     </a>
   );
-};
+});
 
-export function Navbar() {
+AnimatedNavLink.displayName = "AnimatedNavLink";
+
+export const Navbar = memo(function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
-      
-      // Hide header when scrolling down, show when scrolling up
-      if (scrollY < 100) {
-        // Always show at the top of the page
-        setIsVisible(true);
-      } else if (scrollY > lastScrollY.current && scrollY > 100) {
-        // Scrolling down - hide
-        setIsVisible(false);
-      } else if (scrollY < lastScrollY.current) {
-        // Scrolling up - show
-        setIsVisible(true);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setIsScrolled(scrollY > 20);
+          
+          // Hide header when scrolling down, show when scrolling up
+          if (scrollY < 100) {
+            // Always show at the top of the page
+            setIsVisible(true);
+          } else if (scrollY > lastScrollY.current && scrollY > 100) {
+            // Scrolling down - hide
+            setIsVisible(false);
+          } else if (scrollY < lastScrollY.current) {
+            // Scrolling up - show
+            setIsVisible(true);
+          }
+          
+          lastScrollY.current = scrollY;
+          ticking = false;
+        });
+        ticking = true;
       }
-      
-      lastScrollY.current = scrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -161,4 +179,4 @@ export function Navbar() {
       </div>
     </header>
   );
-}
+});
