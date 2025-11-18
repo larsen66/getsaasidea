@@ -78,9 +78,9 @@ export function FAQSection() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="border overflow-hidden"
               style={{
-                background: "var(--bg-secondary)",
-                borderColor: "var(--border-default)",
-                borderRadius: "var(--radius-lg)",
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
+                borderRadius: "12px",
               }}
             >
               {/* Question */}
@@ -125,12 +125,12 @@ export function FAQSection() {
                             <div
                               className="p-4 border"
                               style={{
-                                background: "var(--bg-tertiary)",
-                                borderRadius: "var(--radius-lg)",
-                                borderColor: "var(--border-default)",
+                                background: "rgb(18, 18, 20)",
+                                borderRadius: "10px",
+                                borderColor: "rgba(39, 39, 42, 0.8)",
                               }}
                             >
-                              <h4 className="font-semibold mb-3 text-sm md:text-base" style={{ color: "var(--accent-red)" }}>
+                              <h4 className="font-semibold mb-3 text-sm md:text-base" style={{ color: "rgb(239, 68, 68)" }}>
                                 Manual Research
                               </h4>
                               <ul className="space-y-2">
@@ -151,13 +151,12 @@ export function FAQSection() {
                             <div
                               className="p-4 border"
                               style={{
-                                background: "var(--bg-tertiary)",
-                                borderRadius: "var(--radius-lg)",
-                                borderColor: "var(--accent-green)",
-                                borderWidth: "var(--border-width)",
+                                background: "rgb(18, 18, 20)",
+                                borderRadius: "10px",
+                                borderColor: "rgba(56, 189, 248, 0.3)",
                               }}
                             >
-                              <h4 className="font-semibold mb-3 text-sm md:text-base" style={{ color: "var(--accent-green)" }}>
+                              <h4 className="font-semibold mb-3 text-sm md:text-base" style={{ color: "rgb(56, 189, 248)" }}>
                                 Our Tool
                               </h4>
                               <ul className="space-y-2">

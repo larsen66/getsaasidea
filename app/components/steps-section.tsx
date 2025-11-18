@@ -1,27 +1,27 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, CheckCircle2, FileText, Clock } from "lucide-react";
+import { CheckCircle2, Clock, TrendingUp } from "lucide-react";
 import { useMounted } from "../hooks/use-mounted";
 
 const steps = [
   {
     number: 1,
-    title: "Describe",
+    title: "Describe Your Idea",
     description: "Tell us your SaaS idea in plain English",
-    component: "describe",
+    duration: "30 seconds",
   },
   {
     number: 2,
-    title: "AI Analyzes",
-    description: "Our AI scans market data, trends, and competition",
-    component: "analyze",
+    title: "AI Analyzes Market",
+    description: "We scan trends, competition, and demand",
+    duration: "2 minutes",
   },
   {
     number: 3,
-    title: "Get Verdict",
-    description: "Receive a clear GO/NO-GO decision with next steps",
-    component: "verdict",
+    title: "Get Clear Verdict",
+    description: "Receive GO/NO-GO with action plan",
+    duration: "instant",
   },
 ];
 
@@ -34,25 +34,32 @@ export function StepsSection() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showVerdict, setShowVerdict] = useState(false);
 
+  // Auto-play through steps
   useEffect(() => {
-    // Auto-advance demo
     const timer1 = setTimeout(() => {
-      setInputValue(exampleIdea);
-    }, 1000);
+      setActiveStep(0);
+    }, 500);
 
     const timer2 = setTimeout(() => {
+      setInputValue(exampleIdea);
+      setTimeout(() => setActiveStep(1), 500);
+    }, 2000);
+
+    const timer3 = setTimeout(() => {
       setIsAnalyzing(true);
     }, 3000);
 
-    const timer3 = setTimeout(() => {
+    const timer4 = setTimeout(() => {
+      setActiveStep(2);
       setIsAnalyzing(false);
       setShowVerdict(true);
-    }, 6000);
+    }, 7000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
+      clearTimeout(timer4);
     };
   }, []);
 
@@ -61,32 +68,41 @@ export function StepsSection() {
       case 0:
         return (
           <motion.div
-            initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-2xl mx-auto"
+            key="step-0"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full"
           >
             <div
-              className="p-6 md:p-8 border"
+              className="p-8 border"
               style={{
-                background: "var(--bg-secondary)",
-                borderColor: "var(--border-default)",
-                borderRadius: "var(--radius-lg)",
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
+                borderRadius: "12px",
               }}
             >
+              {/* Label */}
+              <div className="text-xs uppercase tracking-wider mb-6" style={{ color: "rgb(115, 115, 125)" }}>
+                Step 1: Input
+              </div>
+
               <textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Describe your SaaS idea here..."
-                className="w-full h-32 md:h-40 p-4 border-2 resize-none text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent transition-all"
+                placeholder="Describe your SaaS idea..."
+                className="w-full h-40 p-5 border resize-none text-base focus:outline-none transition-all"
                 style={{
-                  background: "var(--bg-tertiary)",
-                  borderColor: "var(--border-default)",
-                  borderRadius: "var(--radius-lg)",
+                  background: "rgb(18, 18, 20)",
+                  borderColor: "rgba(39, 39, 42, 0.8)",
+                  borderRadius: "10px",
                   color: "var(--text-primary)",
                 }}
               />
+
               {!inputValue && (
-                <div className="mt-3 text-xs italic" style={{ color: "var(--text-disabled)" }}>
+                <div className="mt-4 text-sm italic" style={{ color: "rgb(115, 115, 125)" }}>
                   Example: {exampleIdea}
                 </div>
               )}
@@ -97,72 +113,108 @@ export function StepsSection() {
       case 1:
         return (
           <motion.div
-            initial={mounted ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-2xl mx-auto"
+            key="step-1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full"
           >
             <div
-              className="p-6 md:p-8 border"
+              className="p-8 border"
               style={{
-                background: "var(--bg-secondary)",
-                borderColor: "var(--border-default)",
-                borderRadius: "var(--radius-lg)",
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
+                borderRadius: "12px",
               }}
             >
-              <div className="flex flex-col items-center justify-center min-h-[200px] md:min-h-[250px]">
-                {isAnalyzing ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      className="mb-6"
-                    >
-                      <Sparkles className="w-10 h-10 md:w-12 md:h-12" style={{ color: "var(--accent-blue)" }} strokeWidth={1.5} />
-                    </motion.div>
-                    <div className="space-y-3 w-full">
+              {/* Label */}
+              <div className="text-xs uppercase tracking-wider mb-6" style={{ color: "rgb(115, 115, 125)" }}>
+                Step 2: Analysis
+              </div>
+
+              {isAnalyzing ? (
+                <div className="space-y-8">
+                  {/* Scanning header */}
+                  <div className="mb-6">
+                    <div className="font-medium text-lg mb-1" style={{ color: "var(--text-primary)" }}>
+                      Analyzing market data
+                    </div>
+                    <div className="text-sm" style={{ color: "rgb(115, 115, 125)" }}>
+                      Scanning multiple sources...
+                    </div>
+                  </div>
+
+                  {/* Simple progress bar */}
+                  <div className="relative">
+                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(39, 39, 42, 0.8)" }}>
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: "100%" }}
-                        transition={{ duration: 1.5 }}
-                        className="h-2 rounded-full overflow-hidden"
-                        style={{ background: "rgba(96, 165, 250, 0.2)" }}
-                      >
-                        <motion.div
-                          animate={{ x: ["-100%", "100%"] }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                          className="h-full w-1/3 rounded-full"
-                          style={{ background: "var(--accent-blue)" }}
-                        />
-                      </motion.div>
-                      <div className="text-center text-sm md:text-base" style={{ color: "var(--text-quaternary)" }}>
-                        Scanning market data...
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 mt-4">
-                        {["Reddit", "Product Hunt", "Google Trends"].map((source, i) => (
-                          <motion.div
-                            key={source}
-                            initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: i * 0.3 }}
-                            className="p-2 text-center text-xs"
-                            style={{
-                              background: "var(--bg-tertiary)",
-                              borderRadius: "var(--radius-md)",
-                              color: "var(--text-disabled)",
-                            }}
-                          >
-                            {source}
-                          </motion.div>
-                        ))}
-                      </div>
+                        transition={{ duration: 3, ease: "easeOut" }}
+                        className="h-full"
+                        style={{ background: "rgb(82, 82, 91)" }}
+                      />
                     </div>
-                  </>
-                ) : (
-                  <div className="text-center" style={{ color: "var(--text-disabled)" }}>
-                    Click "Analyze" to start
                   </div>
-                )}
-              </div>
+
+                  {/* Data sources grid */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { name: "Reddit", posts: "247" },
+                      { name: "Product Hunt", reviews: "89" },
+                      { name: "Google Trends", trend: "+23%" }
+                    ].map((source, i) => (
+                      <motion.div
+                        key={source.name}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.15, duration: 0.3 }}
+                        className="p-4 text-center border"
+                        style={{
+                          background: "rgb(18, 18, 20)",
+                          borderRadius: "8px",
+                          borderColor: "rgba(39, 39, 42, 0.8)",
+                        }}
+                      >
+                        <div className="text-xs mb-2" style={{ color: "rgb(115, 115, 125)" }}>
+                          {source.name}
+                        </div>
+                        <div className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>
+                          {source.posts || source.reviews || source.trend}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Status messages */}
+                  <div className="space-y-2.5">
+                    {[
+                      "Analyzing search demand...",
+                      "Identifying pain points...",
+                      "Evaluating competition..."
+                    ].map((msg, i) => (
+                      <motion.div
+                        key={msg}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.4, duration: 0.3 }}
+                        className="flex items-center gap-3 text-sm"
+                        style={{ color: "rgb(115, 115, 125)" }}
+                      >
+                        <div className="w-1 h-1 rounded-full" style={{ background: "rgb(82, 82, 91)" }} />
+                        {msg}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-center" style={{ color: "rgb(115, 115, 125)" }}>
+                    Click step 2 to analyze
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         );
@@ -170,97 +222,139 @@ export function StepsSection() {
       case 2:
         return (
           <motion.div
-            initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-2xl mx-auto"
+            key="step-2"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.4 }}
+            className="w-full"
           >
             <div
-              className="p-6 md:p-8 border"
+              className="p-8 border"
               style={{
-                background: "var(--bg-secondary)",
-                borderColor: "var(--border-default)",
-                borderRadius: "var(--radius-lg)",
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
+                borderRadius: "12px",
               }}
             >
+              {/* Label */}
+              <div className="text-xs uppercase tracking-wider mb-6" style={{ color: "rgb(115, 115, 125)" }}>
+                Step 3: Verdict
+              </div>
+
               {showVerdict ? (
-                <div className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-6"
+                >
                   {/* Verdict Badge */}
-                  <div className="flex items-center justify-center">
-                    <div
-                      className="px-8 py-4 flex items-center gap-4 border"
-                      style={{
-                        background: "var(--bg-secondary)",
-                        borderColor: "var(--border-default)",
-                        borderRadius: "9999px",
-                      }}
-                    >
-                      <CheckCircle2 className="w-5 h-5" style={{ color: "var(--text-primary)" }} strokeWidth={1.5} />
-                      <span className="font-semibold text-xl md:text-2xl" style={{ color: "var(--text-primary)" }}>
-                        GO
-                      </span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center border"
+                        style={{
+                          background: "rgb(18, 18, 20)",
+                          borderColor: "rgba(39, 39, 42, 0.8)",
+                        }}
+                      >
+                        <CheckCircle2 className="w-6 h-6" style={{ color: "var(--text-primary)" }} strokeWidth={2} />
+                      </div>
+                      <div>
+                        <div className="font-bold text-3xl tracking-tight" style={{ color: "var(--text-primary)" }}>
+                          GO
+                        </div>
+                        <div className="text-sm" style={{ color: "rgb(115, 115, 125)" }}>
+                          Strong market signal
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs mb-1" style={{ color: "rgb(115, 115, 125)" }}>
+                        CONFIDENCE
+                      </div>
+                      <div className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
+                        87%
+                      </div>
                     </div>
                   </div>
 
-                  {/* Report Content */}
-                  <div className="space-y-4">
-                    <div
-                      className="p-4 border"
-                      style={{
-                        background: "var(--bg-tertiary)",
-                        borderRadius: "var(--radius-lg)",
-                        borderColor: "var(--border-default)",
-                      }}
-                    >
-                      <h4 className="font-medium mb-2 text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                        Market Opportunity
-                      </h4>
-                      <p className="text-xs md:text-sm" style={{ color: "var(--text-quaternary)" }}>
-                        Strong demand detected. 2.3K+ monthly searches for "freelancer time tracking"
-                      </p>
-                    </div>
+                  {/* Key Metrics */}
+                  <div className="grid grid-cols-3 gap-px" style={{ background: "rgba(39, 39, 42, 0.8)" }}>
+                    {[
+                      { label: "Search Vol.", value: "2.3K+", trend: "+23%" },
+                      { label: "Competition", value: "Medium", trend: "Gap found" },
+                      { label: "TAM", value: "$4.2B", trend: "Growing" }
+                    ].map((metric, i) => (
+                      <motion.div
+                        key={metric.label}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.1, duration: 0.3 }}
+                        className="p-4"
+                        style={{ background: "rgb(18, 18, 20)" }}
+                      >
+                        <div className="text-xs mb-2" style={{ color: "rgb(115, 115, 125)" }}>
+                          {metric.label}
+                        </div>
+                        <div className="font-bold text-xl mb-1" style={{ color: "var(--text-primary)" }}>
+                          {metric.value}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs" style={{ color: "rgb(115, 115, 125)" }}>
+                          <TrendingUp className="w-3 h-3" strokeWidth={2} />
+                          {metric.trend}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
 
-                    <div
-                      className="p-4 border"
-                      style={{
-                        background: "var(--bg-tertiary)",
-                        borderRadius: "var(--radius-lg)",
-                        borderColor: "var(--border-default)",
-                      }}
-                    >
-                      <h4 className="font-medium mb-2 text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                        Competition Analysis
-                      </h4>
-                      <p className="text-xs md:text-sm" style={{ color: "var(--text-quaternary)" }}>
-                        Existing solutions are complex. Opportunity for simpler, calendar-integrated approach.
-                      </p>
+                  {/* Next Steps */}
+                  <div
+                    className="p-5 border"
+                    style={{
+                      background: "rgb(18, 18, 20)",
+                      borderColor: "rgba(39, 39, 42, 0.8)",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <div className="text-xs uppercase tracking-wider mb-4" style={{ color: "rgb(115, 115, 125)" }}>
+                      Recommended Action
                     </div>
-
-                    <div
-                      className="p-4 border"
-                      style={{
-                        background: "var(--bg-tertiary)",
-                        borderRadius: "var(--radius-lg)",
-                        borderColor: "var(--border-default)",
-                      }}
-                    >
-                      <h4 className="font-medium mb-2 text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                        Next Steps
-                      </h4>
-                      <ul className="text-xs md:text-sm space-y-1 list-disc list-inside" style={{ color: "var(--text-quaternary)" }}>
-                        <li>Build MVP focusing on calendar integration</li>
-                        <li>Target freelancers on Twitter/X</li>
-                        <li>Price point: $9-15/month</li>
-                      </ul>
+                    <div className="space-y-3">
+                      {[
+                        "Build MVP: Calendar integration + auto-tracking",
+                        "Target: Freelancers on Twitter/X & Product Hunt",
+                        "Pricing: $9-12/mo (vs competitors $15-25)"
+                      ].map((step, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.2 + i * 0.1, duration: 0.3 }}
+                          className="flex items-start gap-3"
+                        >
+                          <div
+                            className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 text-xs font-semibold mt-0.5"
+                            style={{
+                              background: "rgba(39, 39, 42, 0.8)",
+                              color: "rgb(161, 161, 170)",
+                            }}
+                          >
+                            {i + 1}
+                          </div>
+                          <div className="text-sm" style={{ color: "var(--text-tertiary)" }}>
+                            {step}
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ) : (
-                <div className="flex items-center justify-center min-h-[200px] md:min-h-[250px]">
-                  <div className="text-center">
-                    <FileText className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-4" style={{ color: "var(--text-disabled)" }} strokeWidth={1.5} />
-                    <p className="text-sm md:text-base" style={{ color: "var(--text-disabled)" }}>
-                      Your verdict will appear here
-                    </p>
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-center" style={{ color: "rgb(115, 115, 125)" }}>
+                    Verdict will appear here
                   </div>
                 </div>
               )}
@@ -275,7 +369,7 @@ export function StepsSection() {
 
   return (
     <section data-section="steps" className="section-container relative w-full px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Section Title */}
         <motion.div
           initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
@@ -284,90 +378,140 @@ export function StepsSection() {
           transition={{ duration: 0.4 }}
           className="mb-24 md:mb-32 text-center"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-semibold mb-4 tracking-tight" style={{ color: "var(--text-primary)" }}>
-            3 Steps to Clarity
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-semibold mb-6 tracking-tight" style={{ color: "var(--text-primary)" }}>
+            How It Works
           </h2>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
-            This is how it works. Everything is ready, join the waitlist for early access.
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+            From idea to verdict in 3 simple steps
           </p>
         </motion.div>
 
-        {/* Steps Navigation */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 mb-16 md:mb-24">
-          {steps.map((step, index) => (
-            <motion.button
-              key={index}
-              onClick={() => {
-                setActiveStep(index);
-                if (index === 1) setIsAnalyzing(true);
-                if (index === 2) setShowVerdict(true);
-              }}
-              initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="flex items-center gap-4 md:gap-6 px-6 md:px-8 py-6 border transition-all duration-300 group relative overflow-hidden"
-              style={{
-                borderRadius: "var(--radius-lg)",
-                background: activeStep === index ? "var(--bg-secondary)" : "transparent",
-                borderColor: activeStep === index ? "var(--border-default)" : "var(--border-subtle)",
-                color: activeStep === index ? "var(--text-primary)" : "var(--text-disabled)",
-              }}
-            >
-              {/* Step number badge */}
-              <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center flex-shrink-0 relative z-10 font-semibold text-base md:text-lg border"
-                style={{
-                  background: activeStep === index ? "var(--bg-primary)" : "var(--bg-tertiary)",
-                  borderColor: activeStep === index ? "var(--border-default)" : "var(--border-subtle)",
-                  color: activeStep === index ? "var(--text-primary)" : "var(--text-quaternary)",
-                }}
-              >
-                {step.number}
-              </div>
+        {/* Steps Layout */}
+        <div className="grid md:grid-cols-[280px_1fr] gap-8 md:gap-12 mb-20">
+          {/* Left: Step Navigation */}
+          <div className="relative">
+            <div className="space-y-0">
+              {steps.map((step, index) => {
+                const isActive = activeStep === index;
+                const isCompleted = activeStep > index;
 
-              <div className="text-left relative z-10">
-                <div className="font-semibold text-base md:text-lg mb-1">{step.title}</div>
-                <div className="text-sm hidden md:block" style={{ color: activeStep === index ? "var(--text-tertiary)" : "var(--text-disabled)" }}>
-                  {step.description}
-                </div>
-              </div>
-            </motion.button>
-          ))}
+                return (
+                  <div key={index} className="relative">
+                    {/* Connecting line */}
+                    {index < steps.length - 1 && (
+                      <div
+                        className="absolute left-6 top-14 w-0.5 h-16"
+                        style={{
+                          background: "rgba(39, 39, 42, 0.8)",
+                        }}
+                      >
+                        <motion.div
+                          initial={{ height: 0 }}
+                          animate={{
+                            height: isCompleted || isActive ? "100%" : 0,
+                          }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                          className="w-full"
+                          style={{ background: "rgb(82, 82, 91)" }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Step button */}
+                    <motion.button
+                      onClick={() => {
+                        setActiveStep(index);
+                        if (index === 1) {
+                          setIsAnalyzing(true);
+                          setTimeout(() => setIsAnalyzing(false), 3000);
+                        }
+                        if (index === 2) setShowVerdict(true);
+                      }}
+                      initial={mounted ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className="relative flex items-start gap-4 py-6 w-full text-left transition-all duration-300"
+                    >
+                      {/* Step number */}
+                      <div
+                        className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-lg border relative z-10 transition-all duration-300"
+                        style={{
+                          background: isActive || isCompleted ? "rgb(24, 24, 27)" : "rgb(18, 18, 20)",
+                          borderColor: isActive || isCompleted ? "rgba(82, 82, 91, 0.8)" : "rgba(39, 39, 42, 0.8)",
+                          color: isActive || isCompleted ? "var(--text-primary)" : "rgb(115, 115, 125)",
+                        }}
+                      >
+                        {isCompleted ? (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <CheckCircle2 className="w-5 h-5" strokeWidth={2.5} />
+                          </motion.div>
+                        ) : (
+                          step.number
+                        )}
+                      </div>
+
+                      {/* Step info */}
+                      <div className="flex-1 pt-1">
+                        <div
+                          className="font-semibold text-base mb-1 transition-colors duration-300"
+                          style={{
+                            color: isActive ? "var(--text-primary)" : "var(--text-quaternary)",
+                          }}
+                        >
+                          {step.title}
+                        </div>
+                        <div
+                          className="text-sm mb-2 transition-colors duration-300"
+                          style={{
+                            color: isActive ? "var(--text-tertiary)" : "rgb(115, 115, 125)",
+                          }}
+                        >
+                          {step.description}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs" style={{ color: "rgb(115, 115, 125)" }}>
+                          <Clock className="w-3 h-3" strokeWidth={1.5} />
+                          {step.duration}
+                        </div>
+                      </div>
+                    </motion.button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right: Step Content */}
+          <div className="relative min-h-[500px]">
+            <AnimatePresence mode="wait">
+              {renderStepContent(activeStep)}
+            </AnimatePresence>
+          </div>
         </div>
 
-        {/* Interactive Demo */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeStep}
-            initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-          >
-            {renderStepContent(activeStep)}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Time Badge */}
+        {/* Bottom CTA */}
         <motion.div
           initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-20 md:mt-28 text-center"
+          className="text-center"
         >
           <div
             className="inline-flex items-center gap-4 px-8 py-4 border"
             style={{
-              background: "var(--bg-secondary)",
-              borderColor: "var(--border-default)",
+              background: "rgb(15, 15, 17)",
+              borderColor: "rgba(39, 39, 42, 0.8)",
               borderRadius: "9999px",
             }}
           >
-            <Clock className="w-4 h-4" style={{ color: "var(--text-quaternary)" }} strokeWidth={1.5} />
-            <span className="text-base md:text-lg font-medium" style={{ color: "var(--text-tertiary)" }}>
-              Takes less time than your morning coffee
+            <Clock className="w-4 h-4" style={{ color: "rgb(115, 115, 125)" }} strokeWidth={1.5} />
+            <span className="text-base font-medium" style={{ color: "var(--text-tertiary)" }}>
+              Everything is ready. Join the waitlist for early access.
             </span>
           </div>
         </motion.div>
@@ -375,4 +519,3 @@ export function StepsSection() {
     </section>
   );
 }
-

@@ -53,20 +53,11 @@ export const SocialProof = memo(function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="relative rounded-lg p-8 md:p-10 transition-all duration-300 group overflow-hidden"
+              className="rounded-lg p-8 md:p-10 border"
               style={{
-                willChange: "transform",
-                background: "var(--bg-secondary)",
-                border: "var(--border-width) solid var(--border-default)",
-                borderRadius: "var(--radius-lg)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--border-default)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "var(--border-default)";
-                e.currentTarget.style.transform = "translateY(0)";
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
+                borderRadius: "12px",
               }}
             >
               {/* Quote icon */}
@@ -81,7 +72,7 @@ export const SocialProof = memo(function SocialProof() {
 
                 <div className="flex items-center gap-4 pt-6 border-t" style={{ borderColor: "var(--border-subtle)" }}>
                   {/* Avatar */}
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-semibold text-base flex-shrink-0 border" style={{ background: "var(--bg-tertiary)", borderColor: "var(--border-default)", color: "var(--text-primary)" }}>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-semibold text-base flex-shrink-0 border" style={{ background: "rgb(24, 24, 27)", borderColor: "rgba(39, 39, 42, 0.8)", color: "rgb(161, 161, 170)" }}>
                     {testimonial.avatar}
                   </div>
                   <div className="flex flex-col">
@@ -109,8 +100,8 @@ export const SocialProof = memo(function SocialProof() {
           <div
             className="inline-flex items-center gap-4 px-8 py-4 rounded-full border"
             style={{
-              background: "var(--bg-secondary)",
-              borderColor: "var(--border-default)",
+              background: "rgb(15, 15, 17)",
+              borderColor: "rgba(39, 39, 42, 0.8)",
             }}
           >
             <Users className="w-4 h-4" style={{ color: "var(--text-quaternary)" }} strokeWidth={1.5} />

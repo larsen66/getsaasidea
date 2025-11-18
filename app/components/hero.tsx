@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, memo, useCallback } from "react";
 import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
-import { Clock, CreditCard, Zap, ArrowRight, X, CheckCircle2, Rocket } from "lucide-react";
+import { Clock, CreditCard, Zap, ArrowRight, CheckCircle2, Rocket } from "lucide-react";
 
 export const ContainerScroll = ({
   titleComponent,
@@ -147,10 +147,38 @@ export const Card = ({
 
 export const HeroScrollDemo = memo(function HeroScrollDemo() {
   const [email, setEmail] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitStatus, setSubmitStatus] = React.useState<"idle" | "success" | "error">("idle");
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email submitted:", email);
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setEmail("");
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+      } else {
+        setSubmitStatus("error");
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+      }
+    } catch (error) {
+      console.error("Error submitting email:", error);
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [email]);
 
   const formComponent = (
@@ -174,16 +202,21 @@ export const HeroScrollDemo = memo(function HeroScrollDemo() {
         </div>
           <button
             type="submit"
+            disabled={isSubmitting}
             style={{
               borderRadius: "var(--radius-lg)",
-              background: "var(--text-primary)",
+              background: submitStatus === "success" ? "rgb(34, 197, 94)" : submitStatus === "error" ? "rgb(239, 68, 68)" : "var(--text-primary)",
               color: "var(--bg-primary)",
-              border: "var(--border-width) solid var(--text-primary)",
+              border: "var(--border-width) solid",
+              borderColor: submitStatus === "success" ? "rgb(34, 197, 94)" : submitStatus === "error" ? "rgb(239, 68, 68)" : "var(--text-primary)",
+              opacity: isSubmitting ? 0.7 : 1,
             }}
-            className="px-10 py-6 text-lg font-semibold hover:opacity-90 transition-all duration-300 whitespace-nowrap flex items-center justify-center gap-2 group"
+            className="px-10 py-6 text-lg font-semibold hover:opacity-90 transition-all duration-300 whitespace-nowrap flex items-center justify-center gap-2 group disabled:cursor-not-allowed"
           >
-            Join Early Access Waitlist
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
+            {isSubmitting ? "Submitting..." : submitStatus === "success" ? "Success!" : submitStatus === "error" ? "Try Again" : "Join Early Access Waitlist"}
+            {!isSubmitting && submitStatus !== "success" && (
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
+            )}
           </button>
       </form>
       <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 text-base" style={{ color: "var(--text-tertiary)" }}>
@@ -239,102 +272,207 @@ export const HeroScrollDemo = memo(function HeroScrollDemo() {
         formComponent={formComponent}
       >
         <div
-          className="mx-auto h-full w-full flex items-center justify-center overflow-hidden"
+          className="mx-auto h-full w-full flex items-center justify-center overflow-hidden relative"
           style={{
             borderRadius: "var(--radius-md)",
-            background: "var(--bg-secondary)",
+            background: "rgb(10, 10, 11)",
           }}
         >
-          <div className="grid grid-cols-2 h-full w-full gap-4 p-6">
-            {/* Before */}
-            <div
+          <div className="grid grid-cols-2 h-full w-full gap-4 p-6 relative z-10">
+            {/* Before - Chaotic State */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
               className="p-6 flex flex-col border"
               style={{
-                background: "var(--bg-primary)",
-                borderRadius: "var(--radius-md)",
-                borderColor: "var(--border-default)",
+                background: "rgb(15, 15, 17)",
+                borderRadius: "12px",
+                borderColor: "rgba(39, 39, 42, 0.8)",
               }}
             >
-              <div className="text-base font-medium mb-6 flex items-center gap-3" style={{ color: "var(--text-secondary)" }}>
-                <X className="w-4 h-4" style={{ color: "var(--text-quaternary)" }} strokeWidth={1.5} />
-                <span>Before</span>
+              <div className="text-xs font-medium mb-6 flex items-center gap-2" style={{ color: "rgb(115, 115, 125)" }}>
+                <div className="w-1 h-1 rounded-full" style={{ background: "rgb(239, 68, 68)" }}></div>
+                <span className="uppercase tracking-wider">Before</span>
               </div>
+
               <div
-                className="flex-1 p-3 overflow-hidden"
+                className="flex-1 p-5 overflow-hidden"
                 style={{
-                  background: "var(--bg-muted)",
-                  borderRadius: "var(--radius-sm)",
+                  background: "rgb(18, 18, 20)",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(39, 39, 42, 0.6)",
                 }}
               >
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {Array.from({ length: 8 }).map((_, i) => (
+                {/* Browser tabs - overwhelming */}
+                <div className="flex flex-wrap gap-1 mb-5 opacity-50">
+                  {Array.from({ length: 10 }).map((_, i) => (
                     <div
                       key={i}
-                      className="px-2 py-1 text-xs truncate max-w-[80px]"
+                      className="px-2 py-1 text-xs border"
                       style={{
-                        background: "var(--bg-tertiary)",
-                        borderRadius: "var(--radius-sm)",
-                        color: "var(--text-quaternary)",
+                        background: "rgb(24, 24, 27)",
+                        borderRadius: "4px",
+                        borderColor: "rgba(39, 39, 42, 0.8)",
+                        color: "rgb(82, 82, 91)",
+                        fontSize: "9px",
                       }}
                     >
                       Tab {i + 1}
                     </div>
                   ))}
                 </div>
-                <div className="space-y-2">
-                  <div className="h-2 rounded w-3/4" style={{ background: "var(--border-strong)" }}></div>
-                  <div className="h-2 rounded w-full" style={{ background: "var(--border-strong)" }}></div>
-                  <div className="h-2 rounded w-5/6" style={{ background: "var(--border-strong)" }}></div>
+
+                {/* Messy content lines */}
+                <div className="space-y-2.5 mb-5">
+                  {[70, 100, 55, 85].map((width, i) => (
+                    <div
+                      key={i}
+                      className="h-1.5 rounded"
+                      style={{
+                        background: "rgba(63, 63, 70, 0.4)",
+                        width: `${width}%`,
+                      }}
+                    ></div>
+                  ))}
                 </div>
-                <div className="mt-3 text-xs text-center" style={{ color: "var(--text-disabled)" }}>
-                  Chaos of 20 tabs
+
+                {/* Scattered notes */}
+                <div className="grid grid-cols-2 gap-1.5">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="p-2 border"
+                      style={{
+                        background: "rgb(24, 24, 27)",
+                        borderRadius: "4px",
+                        borderColor: "rgba(39, 39, 42, 0.8)",
+                      }}
+                    >
+                      <div className="h-1 w-3/4 rounded mb-1" style={{ background: "rgba(63, 63, 70, 0.5)" }}></div>
+                      <div className="h-1 w-1/2 rounded" style={{ background: "rgba(63, 63, 70, 0.3)" }}></div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 text-xs text-center" style={{ color: "rgb(82, 82, 91)" }}>
+                  Hours of scattered research
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* After */}
-            <div
+            {/* After - Clean & Organized */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               className="p-6 flex flex-col border"
               style={{
-                background: "var(--bg-primary)",
-                borderRadius: "var(--radius-md)",
-                borderColor: "var(--border-default)",
+                background: "rgb(15, 15, 17)",
+                borderRadius: "12px",
+                borderColor: "rgba(39, 39, 42, 0.8)",
               }}
             >
-              <div className="text-base font-medium mb-6 flex items-center gap-3" style={{ color: "var(--text-secondary)" }}>
-                <CheckCircle2 className="w-4 h-4" style={{ color: "var(--text-quaternary)" }} strokeWidth={1.5} />
-                <span>After</span>
+              <div className="text-xs font-medium mb-6 flex items-center gap-2" style={{ color: "rgb(115, 115, 125)" }}>
+                <div className="w-1 h-1 rounded-full" style={{ background: "rgb(56, 189, 248)" }}></div>
+                <span className="uppercase tracking-wider">After</span>
               </div>
+
               <div
-                className="flex-1 p-4 flex flex-col justify-center"
+                className="flex-1 p-5 flex flex-col justify-between"
                 style={{
-                  background: "var(--bg-muted)",
-                  borderRadius: "var(--radius-sm)",
+                  background: "rgb(18, 18, 20)",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(39, 39, 42, 0.6)",
                 }}
               >
+                {/* Main verdict card */}
                 <div
-                  className="p-4 mb-6 border"
+                  className="p-5 mb-5 border"
                   style={{
-                    background: "var(--bg-secondary)",
-                    borderColor: "var(--border-default)",
-                    borderRadius: "var(--radius-md)",
+                    background: "rgba(14, 165, 233, 0.04)",
+                    borderRadius: "10px",
+                    borderColor: "rgba(56, 189, 248, 0.15)",
                   }}
                 >
-                  <div className="flex items-center gap-3 mb-2">
-                    <CheckCircle2 className="w-4 h-4" style={{ color: "var(--text-primary)" }} strokeWidth={1.5} />
-                    <div className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>GO</div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center border"
+                      style={{
+                        background: "rgba(14, 165, 233, 0.08)",
+                        borderColor: "rgba(56, 189, 248, 0.2)",
+                      }}
+                    >
+                      <CheckCircle2 className="w-4 h-4" style={{ color: "rgb(125, 211, 252)" }} strokeWidth={2} />
+                    </div>
+                    <div>
+                      <div className="font-bold text-xl tracking-tight" style={{ color: "rgb(224, 242, 254)" }}>
+                        GO
+                      </div>
+                      <div className="text-xs" style={{ color: "rgb(115, 115, 125)" }}>
+                        Strong signal
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-sm" style={{ color: "var(--text-tertiary)" }}>Clear verdict</div>
+
+                  {/* Mini progress bars */}
+                  <div className="space-y-2">
+                    {[
+                      { label: "Market", width: "85%" },
+                      { label: "Competition", width: "72%" },
+                      { label: "Demand", width: "90%" }
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <div className="text-xs" style={{ color: "rgb(115, 115, 125)", width: "70px" }}>{item.label}</div>
+                        <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(39, 39, 42, 0.8)" }}>
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: item.width }}
+                            transition={{ delay: 0.5 + i * 0.1, duration: 0.6, ease: "easeOut" }}
+                            className="h-full rounded-full"
+                            style={{ background: "rgb(56, 189, 248)" }}
+                          ></motion.div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="h-2 rounded w-full" style={{ background: "var(--border-strong)" }}></div>
-                  <div className="h-2 rounded w-3/4" style={{ background: "var(--border-strong)" }}></div>
+
+                {/* Next steps */}
+                <div className="space-y-1.5">
+                  <div className="text-xs font-medium mb-2" style={{ color: "rgb(115, 115, 125)" }}>
+                    NEXT STEPS
+                  </div>
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2.5 p-2.5 border"
+                      style={{
+                        background: "rgb(24, 24, 27)",
+                        borderRadius: "6px",
+                        borderColor: "rgba(39, 39, 42, 0.8)",
+                      }}
+                    >
+                      <div className="w-4 h-4 rounded flex items-center justify-center text-xs font-medium"
+                        style={{
+                          background: "rgba(39, 39, 42, 0.8)",
+                          color: "rgb(115, 115, 125)",
+                          fontSize: "10px",
+                        }}
+                      >
+                        {i}
+                      </div>
+                      <div className="flex-1">
+                        <div className="h-1 rounded" style={{ background: "rgba(63, 63, 70, 0.5)", width: i === 1 ? "75%" : i === 2 ? "60%" : "70%" }}></div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="mt-3 text-xs text-center" style={{ color: "var(--text-tertiary)" }}>
-                  Clean dashboard with verdict
+
+                <div className="mt-4 text-xs text-center" style={{ color: "rgb(115, 115, 125)" }}>
+                  Clear roadmap in 15 minutes
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </ContainerScroll>

@@ -54,19 +54,11 @@ export function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="relative p-8 md:p-10 border transition-all duration-300 group overflow-hidden"
+              className="p-8 md:p-10 border"
               style={{
-                background: "var(--bg-secondary)",
-                borderRadius: "var(--radius-lg)",
-                borderColor: plan.popular ? "var(--border-default)" : "var(--border-subtle)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.borderColor = "var(--border-default)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.borderColor = plan.popular ? "var(--border-default)" : "var(--border-subtle)";
+                background: "rgb(15, 15, 17)",
+                borderRadius: "12px",
+                borderColor: "rgba(39, 39, 42, 0.8)",
               }}
             >
               {/* Popular Badge */}

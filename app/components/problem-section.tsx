@@ -7,20 +7,20 @@ import { useMounted } from "../hooks/use-mounted";
 const storySteps = [
   {
     icon: Lightbulb,
-    iconColor: "var(--accent-blue)",
+    iconColor: "rgb(56, 189, 248)",
     text: "Great idea!",
     description: "You feel the excitement. This could be the one.",
   },
   {
     icon: BrainCircuit,
-    iconColor: "var(--accent-purple)",
+    iconColor: "rgb(115, 115, 125)",
     text: "*3 hours later...*",
     description: "You have 15 tabs open, a mess of conflicting data, and more questions than answers.",
     showChaos: true,
   },
   {
     icon: FolderX,
-    iconColor: "var(--accent-red)",
+    iconColor: "rgb(239, 68, 68)",
     text: "Maybe later...",
     description: 'You close your laptop. The project is postponed "until you have more time to think."',
   },
@@ -63,10 +63,10 @@ export function ProblemSection() {
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.15 }}
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-md flex items-center justify-center mb-8 border"
+                  className="w-16 h-16 md:w-20 md:h-20 rounded-lg flex items-center justify-center mb-8 border"
                   style={{
-                    background: "var(--bg-secondary)",
-                    borderColor: "var(--border-default)",
+                    background: "rgb(15, 15, 17)",
+                    borderColor: "rgba(39, 39, 42, 0.8)",
                   }}
                 >
                   <step.icon className="w-8 h-8 md:w-10 md:h-10" style={{ color: "var(--text-primary)" }} strokeWidth={1.5} />
@@ -98,22 +98,24 @@ export function ProblemSection() {
                   transition={{ duration: 0.5, delay: index * 0.15 + 0.2 }}
                   className="w-full max-w-2xl p-4 md:p-6 mb-6 border"
                   style={{
-                    background: "var(--bg-tertiary)",
-                    borderRadius: "var(--radius-lg)",
-                    borderColor: "var(--border-default)",
+                    background: "rgb(15, 15, 17)",
+                    borderRadius: "12px",
+                    borderColor: "rgba(39, 39, 42, 0.8)",
                   }}
                 >
-                  <div className="p-3 md:p-4" style={{ background: "var(--bg-secondary)", borderRadius: "var(--radius-md)" }}>
+                  <div className="p-3 md:p-4" style={{ background: "rgb(18, 18, 20)", borderRadius: "10px" }}>
                     {/* Browser tabs simulation */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {Array.from({ length: 12 }).map((_, i) => (
+                    <div className="flex flex-wrap gap-1.5 mb-4 opacity-50">
+                      {Array.from({ length: 10 }).map((_, i) => (
                         <div
                           key={i}
-                          className="px-3 py-1.5 text-xs truncate max-w-[120px] md:max-w-[150px]"
+                          className="px-2 py-1 text-xs truncate max-w-[100px] md:max-w-[130px] border"
                           style={{
-                            background: "var(--bg-tertiary)",
-                            borderRadius: "var(--radius-sm)",
-                            color: "var(--text-tertiary)",
+                            background: "rgb(24, 24, 27)",
+                            borderRadius: "4px",
+                            borderColor: "rgba(39, 39, 42, 0.8)",
+                            color: "rgb(82, 82, 91)",
+                            fontSize: "9px",
                           }}
                         >
                           Tab {i + 1}...
@@ -122,13 +124,13 @@ export function ProblemSection() {
                     </div>
                     {/* Content chaos */}
                     <div className="space-y-2">
-                      <div className="h-3 rounded w-full" style={{ background: "var(--bg-tertiary)" }}></div>
-                      <div className="h-3 rounded w-5/6" style={{ background: "var(--bg-tertiary)" }}></div>
-                      <div className="h-3 rounded w-4/5" style={{ background: "var(--bg-tertiary)" }}></div>
-                      <div className="h-3 rounded w-full" style={{ background: "var(--bg-tertiary)" }}></div>
-                      <div className="h-3 rounded w-3/4" style={{ background: "var(--bg-tertiary)" }}></div>
+                      <div className="h-2 rounded w-full" style={{ background: "rgba(63, 63, 70, 0.4)" }}></div>
+                      <div className="h-2 rounded w-5/6" style={{ background: "rgba(63, 63, 70, 0.4)" }}></div>
+                      <div className="h-2 rounded w-4/5" style={{ background: "rgba(63, 63, 70, 0.4)" }}></div>
+                      <div className="h-2 rounded w-full" style={{ background: "rgba(63, 63, 70, 0.4)" }}></div>
+                      <div className="h-2 rounded w-3/4" style={{ background: "rgba(63, 63, 70, 0.4)" }}></div>
                     </div>
-                    <div className="mt-4 text-center text-xs" style={{ color: "var(--text-disabled)" }}>
+                    <div className="mt-4 text-center text-xs" style={{ color: "rgb(82, 82, 91)" }}>
                       Tab chaos screenshot
                     </div>
                   </div>

@@ -7,11 +7,39 @@ import { useMounted } from "../hooks/use-mounted";
 export function FinalCTASection() {
   const mounted = useMounted();
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Email submitted:", email);
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setEmail("");
+        // Reset success message after 3 seconds
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+      } else {
+        setSubmitStatus("error");
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+      }
+    } catch (error) {
+      console.error("Error submitting email:", error);
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,28 +83,33 @@ export function FinalCTASection() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
-              className="flex-1 px-8 py-6 md:py-7 border text-lg md:text-xl focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-transparent transition-all duration-300"
+              className="flex-1 px-8 py-6 md:py-7 border text-lg md:text-xl focus:outline-none focus:ring-1 focus:ring-[rgb(56,189,248)] focus:border-[rgb(56,189,248)] transition-all duration-300"
               style={{
-                borderRadius: "var(--radius-lg)",
-                background: "var(--bg-secondary)",
-                borderColor: "var(--border-default)",
+                borderRadius: "12px",
+                background: "rgb(15, 15, 17)",
+                borderColor: "rgba(39, 39, 42, 0.8)",
                 color: "var(--text-primary)",
               }}
             />
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              className="px-10 py-6 md:py-7 font-semibold transition-all duration-300 whitespace-nowrap text-lg md:text-xl flex items-center justify-center gap-3 relative overflow-hidden group/btn border"
+              disabled={isSubmitting}
+              whileHover={!isSubmitting ? { scale: 1.01 } : {}}
+              whileTap={!isSubmitting ? { scale: 0.99 } : {}}
+              className="px-10 py-6 md:py-7 font-semibold transition-all duration-300 whitespace-nowrap text-lg md:text-xl flex items-center justify-center gap-3 relative overflow-hidden group/btn border disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 borderRadius: "var(--radius-lg)",
-                background: "var(--text-primary)",
+                background: submitStatus === "success" ? "rgb(34, 197, 94)" : submitStatus === "error" ? "rgb(239, 68, 68)" : "var(--text-primary)",
                 color: "var(--bg-primary)",
-                borderColor: "var(--text-primary)",
+                borderColor: submitStatus === "success" ? "rgb(34, 197, 94)" : submitStatus === "error" ? "rgb(239, 68, 68)" : "var(--text-primary)",
               }}
             >
-              <span className="relative z-10">Join Early Access Waitlist</span>
-              <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
+              <span className="relative z-10">
+                {isSubmitting ? "Submitting..." : submitStatus === "success" ? "Success!" : submitStatus === "error" ? "Try Again" : "Join Early Access Waitlist"}
+              </span>
+              {!isSubmitting && submitStatus !== "success" && (
+                <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
+              )}
             </motion.button>
           </div>
         </motion.form>
@@ -99,57 +132,6 @@ export function FinalCTASection() {
           </div>
         </motion.div>
 
-        {/* Trust Section */}
-        <motion.div
-          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center"
-        >
-          <p className="text-sm md:text-base mb-6" style={{ color: "var(--text-disabled)" }}>
-            Used by indie hackers from
-          </p>
-
-          {/* Logos */}
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-60 hover:opacity-100 transition-opacity">
-            {/* Y Combinator */}
-            <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 flex items-center justify-center"
-                style={{
-                  background: "var(--text-primary)",
-                  borderRadius: "9999px",
-                }}
-              >
-                <span className="font-bold text-xs" style={{ color: "var(--bg-primary)" }}>Y</span>
-              </div>
-              <span className="font-semibold text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                Y Combinator
-              </span>
-            </div>
-
-            {/* Indie Hackers */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "var(--gradient-purple)" }}>
-                <span className="font-bold text-xs" style={{ color: "var(--text-primary)" }}>IH</span>
-              </div>
-              <span className="font-semibold text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                Indie Hackers
-              </span>
-            </div>
-
-            {/* Product Hunt */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "var(--accent-blue)" }}>
-                <span className="font-bold text-xs" style={{ color: "var(--text-primary)" }}>PH</span>
-              </div>
-              <span className="font-semibold text-sm md:text-base" style={{ color: "var(--text-primary)" }}>
-                Product Hunt
-              </span>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
