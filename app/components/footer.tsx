@@ -30,8 +30,8 @@ export function Footer() {
           className="mb-12 md:mb-16 text-center"
         >
           <p className="text-base md:text-lg" style={{ color: "var(--text-quaternary)" }}>
-            Built by{" "}
-            <span className="font-medium" style={{ color: "var(--text-primary)" }}>[Your Name]</span>, indie hacker tired of analysis paralysis
+            Built by {"David"}
+            <span className="font-medium" style={{ color: "var(--text-primary)" }}></span>, indie hacker tired of analysis paralysis
           </p>
         </motion.div>
 
