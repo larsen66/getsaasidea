@@ -1,26 +1,172 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ========================================
+     BACKGROUNDS - Dark minimalist Linear/Attio style
+     ======================================== */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1a1a1a;
+  --bg-elevated: #1f1f1f;
+  --bg-muted: #171717;
+
+  /* ========================================
+     BORDERS - Minimal, thin 1px borders
+     ======================================== */
+  --border-subtle: #1f1f1f;
+  --border-default: #2a2a2a;
+  --border-strong: #3a3a3a;
+
+  /* ========================================
+     TEXT COLORS - Refined hierarchy
+     ======================================== */
+  --text-primary: #ededed;
+  --text-secondary: #b4b4b4;
+  --text-tertiary: #8a8a8a;
+  --text-quaternary: #6a6a6a;
+  --text-disabled: #4a4a4a;
+
+  /* ========================================
+     ACCENT COLORS - Refined, modern
+     ======================================== */
+  --accent-primary: #ffffff;
+  --accent-green: #22c55e;
+  --accent-green-hover: #16a34a;
+  --accent-red: #ef4444;
+  --accent-red-hover: #dc2626;
+  --accent-blue: #3b82f6;
+  --accent-blue-hover: #2563eb;
+  --accent-purple: #8b5cf6;
+  --accent-purple-hover: #7c3aed;
+
+  /* ========================================
+     GRADIENTS - Minimal, used sparingly
+     ======================================== */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-blue: linear-gradient(135deg, #667eea 0%, #4a90e2 100%);
+  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --gradient-green: linear-gradient(135deg, #10b981 0%, #22c55e 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.05), transparent 70%);
+  --gradient-border: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+
+  /* ========================================
+     GLOW EFFECTS - Very subtle illumination
+     ======================================== */
+  --glow-primary: 0 0 20px rgba(102, 126, 234, 0.15);
+  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.15);
+  --glow-purple: 0 0 20px rgba(139, 92, 246, 0.15);
+  --glow-green: 0 0 20px rgba(34, 197, 94, 0.15);
+
+  /* ========================================
+     SPACING - More generous for minimalism
+     ======================================== */
+  --section-padding-y: 12rem;
+  --section-padding-y-mobile: 6rem;
+  --section-gap: 8rem;
+  --section-gap-mobile: 4rem;
+
+  /* ========================================
+     BORDER RADIUS - Subtle, refined
+     ======================================== */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  /* ========================================
+     BORDER WIDTH - Always 1px for minimalism
+     ======================================== */
+  --border-width: 1px;
+
+  /* ========================================
+     TYPOGRAPHY SCALE - Enhanced for minimalism
+     ======================================== */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.5rem;
+  --text-5xl: 4.5rem;
+  --text-6xl: 5.5rem;
+  --text-7xl: 6.5rem;
+
+  /* ========================================
+     FONT WEIGHTS - More refined
+     ======================================== */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+
+  /* ========================================
+     SHADOWS - Minimal, subtle for dark theme
+     ======================================== */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+  --shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.15);
+  --shadow-card: 0 2px 8px 0 rgb(0 0 0 / 0.2);
+  --shadow-elevated: 0 4px 16px 0 rgb(0 0 0 / 0.25);
+  --shadow-glow: 0 0 24px rgba(102, 126, 234, 0.1);
+  --shadow-none: none;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg-primary);
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.section-container {
+  padding-top: var(--section-padding-y-mobile);
+  padding-bottom: var(--section-padding-y-mobile);
+}
+
+@media (min-width: 768px) {
+  .section-container {
+    padding-top: var(--section-padding-y);
+    padding-bottom: var(--section-padding-y);
+  }
+}
+
+.card-primary {
+  background: var(--bg-secondary);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.card-elevated {
+  background: var(--bg-elevated);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
 }
