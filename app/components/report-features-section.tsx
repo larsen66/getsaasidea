@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BarChart3, MessageSquare, Target, CheckCircle2, Rocket, ArrowRight } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const reportFeatures = [
   {
@@ -169,12 +170,14 @@ const renderPreview = (previewType: string) => {
 };
 
 export function ReportFeaturesSection() {
+  const mounted = useMounted();
+  
   return (
     <section className="relative w-full pt-24 pb-40 px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -195,7 +198,7 @@ export function ReportFeaturesSection() {
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -239,7 +242,7 @@ export function ReportFeaturesSection() {
 
         {/* CTA Button */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}

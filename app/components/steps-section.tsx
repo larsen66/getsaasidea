@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, CheckCircle2, FileText, Clock } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const steps = [
   {
@@ -27,6 +28,7 @@ const steps = [
 const exampleIdea = "A tool that helps freelancers automatically track billable hours and generate invoices from their calendar events.";
 
 export function StepsSection() {
+  const mounted = useMounted();
   const [activeStep, setActiveStep] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -59,7 +61,7 @@ export function StepsSection() {
       case 0:
         return (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-2xl mx-auto"
           >
@@ -95,7 +97,7 @@ export function StepsSection() {
       case 1:
         return (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={mounted ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             className="w-full max-w-2xl mx-auto"
           >
@@ -139,7 +141,7 @@ export function StepsSection() {
                         {["Reddit", "Product Hunt", "Google Trends"].map((source, i) => (
                           <motion.div
                             key={source}
-                            initial={{ opacity: 0 }}
+                            initial={mounted ? { opacity: 0 } : { opacity: 1 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: i * 0.3 }}
                             className="p-2 text-center text-xs"
@@ -168,7 +170,7 @@ export function StepsSection() {
       case 2:
         return (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-2xl mx-auto"
           >
@@ -276,7 +278,7 @@ export function StepsSection() {
       <div className="max-w-5xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -300,7 +302,7 @@ export function StepsSection() {
                 if (index === 1) setIsAnalyzing(true);
                 if (index === 2) setShowVerdict(true);
               }}
-              initial={{ opacity: 0, y: 10 }}
+              initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -338,7 +340,7 @@ export function StepsSection() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeStep}
-            initial={{ opacity: 0, y: 20 }}
+            initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
@@ -349,7 +351,7 @@ export function StepsSection() {
 
         {/* Time Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}

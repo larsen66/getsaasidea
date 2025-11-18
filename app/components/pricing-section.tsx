@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const plans = [
   {
@@ -23,12 +24,14 @@ const plans = [
 ];
 
 export function PricingSection() {
+  const mounted = useMounted();
+  
   return (
     <section className="section-container relative w-full px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-5xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -47,7 +50,7 @@ export function PricingSection() {
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -145,7 +148,7 @@ export function PricingSection() {
 
         {/* Trust Message */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}

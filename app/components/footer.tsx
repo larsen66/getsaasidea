@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Twitter, Mail } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const footerLinks = [
   { label: "About", href: "#about" },
@@ -12,6 +13,8 @@ const footerLinks = [
 ];
 
 export function Footer() {
+  const mounted = useMounted();
+  
   return (
     <footer
       className="relative w-full pt-24 pb-12 px-4 md:px-8 border-t"
@@ -23,7 +26,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto">
         {/* Bio Section */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -39,7 +42,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
           {/* Navigation Links */}
           <motion.nav
-            initial={{ opacity: 0, y: 10 }}
+            initial={mounted ? { opacity: 0, y: 10 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
@@ -63,7 +66,7 @@ export function Footer() {
 
           {/* Social Links */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={mounted ? { opacity: 0, y: 10 } : false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
@@ -96,7 +99,7 @@ export function Footer() {
 
         {/* Copyright */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={mounted ? { opacity: 0 } : { opacity: 1 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}

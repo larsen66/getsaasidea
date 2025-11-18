@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Play, X, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 export function DemoSection() {
+  const mounted = useMounted();
   const [showVideo, setShowVideo] = useState(false);
   const [activeTab, setActiveTab] = useState<"before" | "after">("before");
 
@@ -12,7 +14,7 @@ export function DemoSection() {
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -28,7 +30,7 @@ export function DemoSection() {
 
         {/* Video/Demo Container */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
@@ -365,7 +367,7 @@ export function DemoSection() {
 
         {/* Stats Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}

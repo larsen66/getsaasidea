@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Lightbulb, BrainCircuit, FolderX, ArrowDown } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const storySteps = [
   {
@@ -26,12 +27,14 @@ const storySteps = [
 ];
 
 export function ProblemSection() {
+  const mounted = useMounted();
+  
   return (
     <section className="section-container relative w-full px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-4xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -47,7 +50,7 @@ export function ProblemSection() {
           {storySteps.map((step, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
@@ -56,7 +59,7 @@ export function ProblemSection() {
               {/* Icon and Text */}
               <div className="flex flex-col items-center mb-12 md:mb-16">
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
+                  initial={mounted ? { scale: 0.8, opacity: 0 } : { scale: 1, opacity: 1 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.15 }}
@@ -76,7 +79,7 @@ export function ProblemSection() {
               {/* Arrow Down (except for last step) */}
               {index < storySteps.length - 1 && (
                 <motion.div
-                  initial={{ opacity: 0, y: -10 }}
+                  initial={mounted ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.15 + 0.2 }}
@@ -89,7 +92,7 @@ export function ProblemSection() {
               {/* Screenshot of tab chaos (for step 2) */}
               {step.showChaos && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={mounted ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.15 + 0.2 }}
@@ -137,7 +140,7 @@ export function ProblemSection() {
 
         {/* Closing Text */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.5 }}

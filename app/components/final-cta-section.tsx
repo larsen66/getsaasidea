@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock, Zap, Shield } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 export function FinalCTASection() {
+  const mounted = useMounted();
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,7 +25,7 @@ export function FinalCTASection() {
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
@@ -39,7 +41,7 @@ export function FinalCTASection() {
 
         {/* Email Form */}
         <motion.form
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -81,7 +83,7 @@ export function FinalCTASection() {
 
         {/* Trust Badges */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}
@@ -99,7 +101,7 @@ export function FinalCTASection() {
 
         {/* Trust Section */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}

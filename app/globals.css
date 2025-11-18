@@ -150,6 +150,12 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Предотвращение мерцания при загрузке */
+html {
+  visibility: visible;
+  opacity: 1;
+}
+
 /* Оптимизация для GPU-ускорения */
 .motion-div,
 [class*="motion"] {
@@ -157,6 +163,24 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Предотвращение мерцания для элементов с анимациями */
+/* Элементы с whileInView должны быть видимыми по умолчанию */
+[data-framer-component] {
+  opacity: 1;
+}
+
+/* Плавное появление после гидратации */
+@supports (animation: fade-in) {
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 /* ========================================

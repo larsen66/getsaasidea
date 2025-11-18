@@ -2,6 +2,7 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Users, Quote } from "lucide-react";
+import { useMounted } from "../hooks/use-mounted";
 
 const testimonials = [
   {
@@ -25,12 +26,14 @@ const testimonials = [
 ];
 
 export const SocialProof = memo(function SocialProof() {
+  const mounted = useMounted();
+  
   return (
     <section className="relative w-full pt-24 pb-40 px-4 md:px-8" style={{ background: "var(--bg-primary)" }}>
       <div className="max-w-5xl mx-auto">
         {/* Section Title */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.4 }}
@@ -46,7 +49,7 @@ export const SocialProof = memo(function SocialProof() {
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 10 }}
+              initial={mounted ? { opacity: 0, y: 10 } : false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -97,7 +100,7 @@ export const SocialProof = memo(function SocialProof() {
 
         {/* Join Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={mounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.4, delay: 0.2 }}
